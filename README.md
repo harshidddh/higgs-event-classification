@@ -9,19 +9,41 @@ The data is sourced from the [Higgs Boson Machine Learning Challenge](https://ww
 * **Derived Features (`DER_`):** Complex kinematic quantities computed from the primitive features (e.g., invariant mass of particles).
 * **Missing Data:** The dataset includes physics-based missing values (encoded as `-999.0`), which occur when specific particles are not present in a given event, rendering certain derived calculations invalid.
 
-## Objective
-To develop a classification pipeline that successfully handles imbalanced data and physics-specific anomalies, progressing through baseline models to advanced ensemble methods.
+## 🌟 Unique Project Features
+This project bridges the gap between raw Data Science and Experimental Physics by implementing domain-specific optimizations:
 
-## Methodology
-1.  **Exploratory Data Analysis (EDA):** Analyzing feature distributions, handling `-999.0` anomalies, and evaluating the severe class imbalance between signal and background events.
-2.  **Data Preprocessing:** Feature scaling, imputation strategies for missing derived variables, and data stratification.
-3.  **Modeling Progression:**
-    * Baseline: Logistic Regression
-    * Non-linear handling: Decision Trees & Random Forests
-    * Advanced Ensemble: Gradient Boosting (XGBoost/LightGBM)
-    * Deep Learning (Optional): Multi-Layer Perceptron (MLP)
-4.  **Evaluation:** Models are evaluated primarily on the ROC-AUC score and the Approximate Median Significance (AMS) metric, which is the standard for high-energy physics discoveries.
+1.  **Kinematic Feature Engineering:** Manually reconstructed the **Invariant Mass ($M$)** and **Transverse Mass ($M_T$)** using relativistic four-momentum conservation. This provides the model with the 125 GeV resonance peak, significantly stabilizing the decision boundary.
+    
+2.  **Discovery Significance Maximization ($s/\sqrt{b}$):** Optimized the classification threshold not for accuracy, but for statistical significance ($Z$). Achieved a peak discovery potential of **280.45σ** at an optimal threshold of **0.89**.
+3.  **Explainable AI (SHAP):** Implemented Shapley Additive Explanations (Game Theory) to prove the model honors physical laws, verifying that reconstructed mass is the primary driver for signal classification.
+    
 
-## Tech Stack
-* **Language:** Python
-* **Libraries:** Pandas, NumPy, Scikit-Learn, XGBoost, Matplotlib, Seaborn
+---
+
+## 🧠 Model Architecture & Benchmarks
+The phase space was modeled using a progression of algorithms to prove the necessity of non-linear ensemble methods.
+
+| Model | ROC-AUC | Accuracy |
+| :--- | :--- | :--- |
+| **Logistic Regression** (Baseline) | 0.7985 | 73.85% |
+| **Decision Tree** | 0.8804 | 81.90% |
+| **Random Forest** | 0.8949 | 82.71% |
+| **XGBoost (Physics-Enhanced)** | **0.9064** | **83.72%** |
+
+---
+
+## 📂 Repository Structure
+```text
+higgs-event-classification/
+├── data/
+│   ├── raw/                 # training.csv (ATLAS simulated data)
+│   └── processed/           # Physics-enhanced feature tensors (X_train, y_train)
+├── models/                  # Serialized XGBoost JSON, Random Forest, & Scalers
+├── plots/                   # ROC, Significance, & SHAP beeswarm plots
+├── src/                     
+│   ├── data_pipeline.py     # Kinematic reconstruction, cleaning & scaling
+│   ├── train_model.py       # Multi-model benchmarking engine
+│   ├── evaluate.py          # Significance ($s/\sqrt{b}$) & ROC analysis
+│   └── interpretability.py  # SHAP global/local explanations
+└── requirements.txt
+
